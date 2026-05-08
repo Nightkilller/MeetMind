@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useUser, SignInButton } from '@clerk/nextjs';
+import { useUser, SignInButton, SignUpButton } from '@clerk/nextjs';
 import { motion } from 'framer-motion';
 import {
   Brain,
@@ -89,11 +89,18 @@ export default function LandingPage() {
                 Go to Dashboard
               </Link>
             ) : (
-              <SignInButton mode="modal">
-                <button className="mm-btn mm-btn-primary" style={{ height: '40px', padding: '0 16px' }}>
-                  Get Started Free
-                </button>
-              </SignInButton>
+              <>
+                <SignInButton mode="modal">
+                  <button className="mm-btn mm-btn-primary" style={{ height: '40px', padding: '0 16px' }}>
+                    Get Started Free
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="mm-btn mm-btn-secondary" style={{ height: '40px', padding: '0 16px' }}>
+                    Sign Up
+                  </button>
+                </SignUpButton>
+              </>
             )}
           </div>
         </div>
@@ -169,14 +176,24 @@ export default function LandingPage() {
                 Go to Dashboard
               </Link>
             ) : (
-              <SignInButton mode="modal">
-                <button 
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 mm-btn mm-btn-primary px-10"
-                  style={{ height: '48px', fontSize: '16px' }}
-                >
-                  Start your first meeting
-                </button>
-              </SignInButton>
+              <>
+                <SignInButton mode="modal">
+                  <button 
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 mm-btn mm-btn-primary px-10"
+                    style={{ height: '48px', fontSize: '16px' }}
+                  >
+                    Start your first meeting
+                  </button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button 
+                    className="w-full sm:w-auto flex items-center justify-center gap-2 mm-btn mm-btn-secondary px-10"
+                    style={{ height: '48px', fontSize: '16px' }}
+                  >
+                    Sign Up Free
+                  </button>
+                </SignUpButton>
+              </>
             )}
           </motion.div>
 
