@@ -100,121 +100,98 @@ export default function LandingPage() {
       </nav>
 
       {/* ── Hero ── */}
-      <section className="bg-container pt-[72px] pb-[72px] text-center border-b border-[#F2F2F2]">
-        <div className="max-w-[1200px] mx-auto px-6">
-          <motion.h1
+      <section className="relative min-h-[85vh] flex flex-col items-center justify-center pt-20 px-6 text-center border-b border-[#F2F2F2] overflow-hidden">
+        {/* Decorative Grid Background */}
+        <div className="absolute inset-0 pointer-events-none" style={{
+          backgroundImage: 'linear-gradient(to right, rgba(0, 120, 212, 0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0, 120, 212, 0.05) 1px, transparent 1px)',
+          backgroundSize: '40px 40px',
+          maskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 50%, transparent 100%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 60% 60% at 50% 50%, #000 50%, transparent 100%)',
+        }}></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+          {/* Pill Badge */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-display-hero text-[#17253D] mb-6"
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-[4px] bg-[#E6F2FB] border border-[#CBE6F4] text-[#0078D4] text-[12px] font-bold tracking-widest uppercase mb-12"
           >
-            Your meetings. Finally understood.
-          </motion.h1>
+            <span className="w-1.5 h-1.5 rounded-full bg-[#0078D4]" />
+            AI-POWERED MEETING INTELLIGENCE
+          </motion.div>
 
-          <motion.p
+          {/* Hero Headline */}
+          <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-body text-[#262626] max-w-2xl mx-auto mb-10"
+            className="text-[64px] sm:text-[80px] md:text-[100px] font-bold text-[#17253D] leading-[1.05] tracking-tight mb-8"
+            style={{ fontFamily: 'var(--font-display)' }}
           >
-            MeetMind records your meetings, transcribes with Groq Whisper, analyzes with Llama 3.3 70B,
-            and delivers structured summaries, action items, and follow-up emails — automatically.
-          </motion.p>
+            Record. <span className="text-[#0078D4]">Analyze.</span>
+            <br />
+            Get Action Items.
+          </motion.h1>
 
-          <motion.div
+          {/* Subheadline */}
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="flex flex-wrap items-center justify-center gap-4"
+            className="text-[13px] sm:text-[15px] text-[#A0AAB2] font-mono uppercase tracking-widest leading-relaxed max-w-2xl mx-auto mb-4"
+          >
+            A voice-powered AI meeting platform with real-time transcription and intelligent analysis.
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="text-[15px] text-[#A0AAB2] max-w-xl mx-auto mb-10"
+          >
+            Unlimited meeting summaries. AI-powered insights. No BS.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5 }}
+            className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto"
           >
             {isSignedIn ? (
-              <Link href="/dashboard" className="mm-btn mm-btn-primary px-8">
-                Open Dashboard
-                <ArrowRight size={16} />
+              <Link
+                href="/dashboard"
+                className="w-full sm:w-auto flex items-center justify-center gap-2 mm-btn mm-btn-primary px-10"
+                style={{ height: '48px', fontSize: '16px' }}
+              >
+                Go to Dashboard
               </Link>
             ) : (
               <SignInButton mode="modal">
-                <button className="mm-btn mm-btn-primary px-8">
-                  Start your first meeting free
-                  <ArrowRight size={16} />
+                <button 
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 mm-btn mm-btn-primary px-10"
+                  style={{ height: '48px', fontSize: '16px' }}
+                >
+                  Start your first meeting
                 </button>
               </SignInButton>
             )}
-            <Link href="#features" className="mm-btn mm-btn-secondary px-6">
-              See how it works
-            </Link>
           </motion.div>
 
-          {/* Hero visual — mock UI */}
+          {/* Validation text */}
           <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5, duration: 0.8 }}
-            className="mt-16 max-w-5xl mx-auto card-elevated overflow-hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="mt-10 text-[12px] text-[#A0AAB2] uppercase tracking-wider font-mono"
           >
-            {/* Mock window chrome */}
-            <div className="flex items-center gap-2 px-6 py-3 border-b border-[#F2F2F2] bg-[#F9F8FC]">
-              <span className="text-small text-[#262626] font-semibold">MeetMind Dashboard</span>
-            </div>
-            {/* Mock content */}
-            <div className="p-6 grid grid-cols-3 gap-6 bg-white text-left">
-              <div className="col-span-1">
-                <p className="text-h6 text-[#17253D] mb-4">Live Transcript</p>
-                <div className="space-y-3">
-                  {[
-                    { name: 'Sarah', color: '#0078D4', text: 'Let\'s align on Q3 priorities...' },
-                    { name: 'Marcus', color: '#8764B8', text: 'The mobile launch is critical...' },
-                    { name: 'Sarah', color: '#0078D4', text: 'Agreed, we need that by July 15th.' },
-                  ].map((line, i) => (
-                    <div key={i} className="text-small">
-                      <span className="font-semibold mr-2" style={{ color: line.color }}>{line.name}</span>
-                      <span className="text-[#262626]">{line.text}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="col-span-1">
-                <p className="text-h6 text-[#17253D] mb-4">AI Summary</p>
-                <p className="text-small text-[#262626] mb-4">
-                  Q3 planning session focused on mobile launch timeline and resource allocation...
-                </p>
-                <p className="text-small font-semibold text-[#17253D] mb-2">Key Decisions</p>
-                <div className="space-y-2">
-                  {['Mobile launch deadline: July 15', 'Marketing budget +20%'].map((d, i) => (
-                    <div key={i} className="flex items-start gap-2 text-small text-[#262626]">
-                      <span className="text-[#0078D4] mt-1">•</span>
-                      <span>{d}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="col-span-1">
-                <p className="text-h6 text-[#17253D] mb-4">Action Items</p>
-                <div className="space-y-3">
-                  {[
-                    { text: 'Finalize mobile spec', owner: 'Sarah', priority: 'High', color: '#D13438', bg: '#FDF3F4' },
-                    { text: 'Update roadmap doc', owner: 'Marcus', priority: 'Medium', color: '#795C00', bg: '#FFF4CE' },
-                    { text: 'Schedule design review', owner: 'Team', priority: 'Low', color: '#008013', bg: 'rgba(0, 255, 38, 0.15)' },
-                  ].map((item, i) => (
-                    <div key={i} className="flex items-start gap-3 p-3 border border-[#F2F2F2] rounded-lg">
-                      <div className="w-[18px] h-[18px] rounded border border-[#262626] shrink-0 mt-0.5" />
-                      <div>
-                        <p className="text-small text-[#17253D] font-medium">{item.text}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <span className="text-[11px] font-semibold px-1.5 py-0.5 rounded-sm" style={{ color: item.color, backgroundColor: item.bg }}>{item.priority}</span>
-                          <span className="text-[11px] text-[#262626]">{item.owner}</span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
+            ✓ Setup takes less than 60 seconds. Start recording now.
           </motion.div>
         </div>
       </section>
+
 
       {/* ── Stats ── */}
       <section className="py-[48px] px-6 border-b border-[#F2F2F2] bg-white">

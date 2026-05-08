@@ -17,9 +17,9 @@ MeetMind is a real-time AI meeting copilot that:
 
 ## Live Demo
 
-🔗 **Live App:** [https://meetmind.vercel.app](https://meetmind.vercel.app)  
+🔗 **Live App:** [https://meet-mind-akd7xeben-aditya-guptas-projects-c9826176.vercel.app/](https://meet-mind-akd7xeben-aditya-guptas-projects-c9826176.vercel.app/)  
 🎥 **Demo Video:** [YouTube Link]  
-📁 **GitHub:** [https://github.com/yourusername/meetmind](https://github.com/yourusername/meetmind)
+📁 **GitHub:** [https://github.com/Nightkilller/MeetMind.git](https://github.com/Nightkilller/MeetMind.git)
 
 ## Architecture
 
