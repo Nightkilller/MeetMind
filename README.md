@@ -85,42 +85,10 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ### Environment Variables
 
-See `.env.example` for all required variables.
-
-```env
-# Groq AI (free - get from console.groq.com)
-GROQ_API_KEY=your_groq_api_key_here
-
-# MongoDB Atlas
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/meetmind
-
-# Clerk Authentication (free - get from clerk.com)
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
-CLERK_SECRET_KEY=sk_test_...
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
-```
-
-### Groq API Setup
-
-1. Go to [console.groq.com](https://console.groq.com) → Create API key (free)
-2. Copy the key to `GROQ_API_KEY` in `.env.local`
-3. Models used: `whisper-large-v3` (transcription) + `llama-3.3-70b-versatile` (analysis)
-
-### MongoDB Atlas Setup
-
-1. [cloud.mongodb.com](https://cloud.mongodb.com) → Create free cluster (M0)
-2. Create database: `meetmind`
-3. Copy connection string to `.env.local`
-
-### Clerk Authentication Setup
-
-1. [clerk.com](https://clerk.com) → Create a new application
-2. Enable Email/Password or Social Logins (Google/Microsoft)
-3. Copy Publishable and Secret keys to `.env.local`
-4. For deployment, add your live domain in the Clerk dashboard.
+See `.env.example` for required variables. You will need:
+- `GROQ_API_KEY` (Free from console.groq.com)
+- `MONGODB_URI` (Free Atlas cluster)
+- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY` (Free from clerk.com)
 
 ## Features
 
