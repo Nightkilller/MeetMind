@@ -1,26 +1,291 @@
 @import "tailwindcss";
 
+/* ── Azure Design Tokens ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors - Primary */
+  --azure-blue: #0078D4;
+  --azure-blue-dark: #0067B8;
+  
+  /* Colors - Accent / Navy */
+  --deep-navy: #17253D;
+  --dark-slate: #0E1726;
+  --navy-darkest: #004275;
+  --navy-deep: #002948;
+  
+  /* Colors - Interactive / Light */
+  --light-azure: #CBE6F4;
+  --very-light-azure: #DCEEF8;
+  --sky-blue: #E6F2FB;
+  
+  /* Colors - Neutral */
+  --black: #000000;
+  --charcoal: #262626;
+  --light-gray: #F2F2F2;
+  --very-light-gray: #F4FAFD;
+  
+  /* Colors - Surface */
+  --white: #FFFFFF;
+  --off-white: #FEFEFE;
+  --very-light-lavender: #F9F8FC;
+  
+  /* Semantic */
+  --success-green: #00FF26;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--white);
+  --color-foreground: var(--black);
+  --font-sans: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--white);
+  color: var(--black);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
 }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--light-gray);
+}
+::-webkit-scrollbar-thumb {
+  background: #A0AAB2;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--charcoal);
+}
+
+/* ── Typography Hierarchy ── */
+.text-display-hero { font-family: var(--font-display); font-size: 62px; font-weight: 500; line-height: 72px; letter-spacing: 0px; }
+.text-h2 { font-family: var(--font-display); font-size: 48px; font-weight: 500; line-height: 56px; }
+.text-h3 { font-family: var(--font-display); font-size: 32px; font-weight: 500; line-height: 40px; }
+.text-h6 { font-family: var(--font-sans); font-size: 16px; font-weight: 600; line-height: 24px; }
+.text-body { font-family: var(--font-sans); font-size: 16px; font-weight: 400; line-height: 24px; }
+.text-small { font-family: 'Segoe UI', sans-serif; font-size: 13px; font-weight: 400; line-height: normal; }
+
+/* ── Typography Colors ── */
+.text-primary-nav { color: var(--deep-navy); }
+.text-secondary-nav { color: var(--dark-slate); }
+.text-body-color { color: var(--black); }
+.text-muted { color: var(--charcoal); }
+
+/* ── Text Link ── */
+.mm-link {
+  color: var(--azure-blue-dark);
+  text-decoration: underline;
+  transition: all 0.15s ease;
+}
+.mm-link:hover { color: var(--navy-darkest); }
+.mm-link:visited { color: var(--navy-darkest); }
+.mm-link:active { color: var(--navy-deep); }
+.mm-link:focus-visible { outline: 2px solid var(--azure-blue); outline-offset: 2px; }
+
+/* ── Buttons ── */
+.mm-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 8px;
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  height: 50px;
+  padding: 12px 24px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.mm-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.mm-btn:focus-visible { outline: 2px solid var(--light-azure); outline-offset: 2px; }
+
+/* Primary Button */
+.mm-btn-primary {
+  background: var(--azure-blue);
+  color: var(--white);
+}
+.mm-btn-primary:hover:not(:disabled) { background: var(--azure-blue-dark); color: var(--white); }
+.mm-btn-primary:active:not(:disabled) { background: var(--navy-darkest); }
+
+/* Secondary Button */
+.mm-btn-secondary {
+  background: var(--white);
+  color: var(--charcoal);
+  border: 1px solid var(--charcoal);
+}
+.mm-btn-secondary:hover:not(:disabled) { background: var(--light-gray); color: var(--charcoal); }
+.mm-btn-secondary:active:not(:disabled) { background: var(--sky-blue); border-color: var(--azure-blue); color: var(--azure-blue); }
+
+/* Ghost / Tertiary Button */
+.mm-btn-ghost {
+  background: transparent;
+  color: var(--azure-blue);
+}
+.mm-btn-ghost:hover:not(:disabled) { background: var(--sky-blue); color: var(--azure-blue-dark); }
+.mm-btn-ghost:active:not(:disabled) { background: var(--very-light-azure); color: var(--navy-darkest); }
+.mm-btn-ghost:focus-visible { outline: 2px solid var(--azure-blue); }
+
+/* Red / Danger Button (Not in spec, but needed for app) */
+.mm-btn-danger {
+  background: #FFFFFF;
+  color: #D13438;
+  border: 1px solid #D13438;
+}
+.mm-btn-danger:hover:not(:disabled) { background: #FDF3F4; }
+
+/* ── Cards & Containers ── */
+.card-elevated {
+  background: var(--off-white);
+  color: var(--deep-navy);
+  border-radius: 24px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 0px 2px 0px, rgba(0, 0, 0, 0.14) 0px 2px 4px 0px;
+}
+
+.card-minimal {
+  background: transparent;
+  color: var(--deep-navy);
+  padding: 24px;
+  border-radius: 0px;
+}
+
+.bg-container {
+  background: var(--very-light-gray);
+  padding: 48px 24px;
+}
+
+/* ── Forms & Inputs ── */
+.mm-input {
+  width: 100%;
+  background: var(--white);
+  color: var(--black);
+  border: 1px solid var(--charcoal);
+  border-radius: 4px;
+  padding: 12px 16px;
+  height: 44px;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  outline: none;
+  transition: all 0.15s ease;
+}
+
+.mm-input:hover:not(:disabled) { border-color: var(--azure-blue); }
+.mm-input:focus {
+  border: 2px solid var(--azure-blue);
+  box-shadow: 0 0 0 3px var(--very-light-azure);
+  padding: 11px 15px; /* offset for 2px border */
+}
+.mm-input:disabled { background: var(--light-gray); color: var(--charcoal); border-color: var(--light-gray); cursor: not-allowed; }
+.mm-input.error { border: 2px solid #D13438; box-shadow: 0 0 0 3px rgba(209, 52, 56, 0.2); }
+
+.mm-label {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--deep-navy);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.mm-checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid var(--charcoal);
+  background: var(--white);
+  cursor: pointer;
+  accent-color: var(--azure-blue);
+  flex-shrink: 0;
+}
+
+/* ── Navigation ── */
+.nav-link {
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--charcoal);
+  padding: 16px 10px;
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.nav-link:hover { color: var(--azure-blue); border-bottom-color: var(--azure-blue); }
+.nav-link.active { font-weight: 600; color: var(--azure-blue); border-bottom-color: var(--azure-blue); }
+
+/* ── Badges / Status ── */
+.badge-neutral { background: var(--light-gray); color: var(--charcoal); }
+.badge-success { background: rgba(0, 255, 38, 0.15); color: #008013; }
+.badge-info { background: var(--very-light-azure); color: var(--navy-darkest); }
+.badge-warning { background: #FFF4CE; color: #795C00; }
+.badge-danger { background: #FDF3F4; color: #D13438; }
+
+/* ── Transcript speaker colors ── */
+.speaker-0 { color: #0078D4; }
+.speaker-1 { color: #8764B8; }
+.speaker-2 { color: #008272; }
+.speaker-3 { color: #D13438; }
+.speaker-4 { color: #881798; }
+
+/* ── Shimmer / Skeleton Loading ── */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, #F2F2F2 25%, #E6E6E6 50%, #F2F2F2 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* ── Utilities ── */
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Pulse animation for recording ── */
+@keyframes recording-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.7; }
+}
+.recording-pulse { animation: recording-pulse 1.2s ease-in-out infinite; }
+
+/* ── Waveform bars (adapted to light mode) ── */
+@keyframes wave-1 { 0%, 100% { height: 8px; } 50% { height: 28px; } }
+@keyframes wave-2 { 0%, 100% { height: 16px; } 50% { height: 40px; } }
+@keyframes wave-3 { 0%, 100% { height: 24px; } 50% { height: 12px; } }
+@keyframes wave-4 { 0%, 100% { height: 12px; } 50% { height: 36px; } }
+@keyframes wave-5 { 0%, 100% { height: 20px; } 50% { height: 8px; } }
+.wave-bar-1 { animation: wave-1 0.8s ease-in-out infinite; background-color: #0078D4; }
+.wave-bar-2 { animation: wave-2 0.9s ease-in-out infinite 0.1s; background-color: #0078D4; }
+.wave-bar-3 { animation: wave-3 0.7s ease-in-out infinite 0.2s; background-color: #0078D4; }
+.wave-bar-4 { animation: wave-4 1.0s ease-in-out infinite 0.15s; background-color: #0078D4; }
+.wave-bar-5 { animation: wave-5 0.85s ease-in-out infinite 0.05s; background-color: #0078D4; }
