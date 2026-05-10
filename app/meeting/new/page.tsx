@@ -4,7 +4,7 @@ import { useUser, SignInButton } from '@clerk/nextjs';
 import PageWrapper from '@/components/layout/PageWrapper';
 import MeetingRecorder from '@/components/meeting/MeetingRecorder';
 import Spinner from '@/components/ui/Spinner';
-import { Brain } from 'lucide-react';
+import { Brain, Mic, Database } from 'lucide-react';
 
 export default function NewMeetingPage() {
   const { isLoaded, isSignedIn } = useUser();
@@ -50,12 +50,14 @@ export default function NewMeetingPage() {
         {/* Info cards */}
         <div className="max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { title: 'Groq Whisper', desc: 'Real-time transcription', emoji: '🎙️' },
-            { title: 'Llama 3.3 70B', desc: 'AI analysis & insights', emoji: '🧠' },
-            { title: 'Auto-saved', desc: 'Stored to MongoDB Atlas', emoji: '💾' },
+            { title: 'Groq Whisper', desc: 'Real-time transcription', icon: Mic },
+            { title: 'Llama 3.3 70B', desc: 'AI analysis & insights', icon: Brain },
+            { title: 'Auto-saved', desc: 'Stored to MongoDB Atlas', icon: Database },
           ].map((item, i) => (
-            <div key={i} className="bg-white border border-[#F2F2F2] rounded-lg p-6 text-center">
-              <p className="text-2xl mb-3">{item.emoji}</p>
+            <div key={i} className="bg-white border border-[#F2F2F2] rounded-lg p-6 text-center flex flex-col items-center">
+              <div className="w-12 h-12 bg-[#F4FAFD] rounded-full flex items-center justify-center mb-3">
+                <item.icon size={24} color="#0078D4" />
+              </div>
               <p className="text-h6 text-[#17253D] mb-1">{item.title}</p>
               <p className="text-small text-[#262626]">{item.desc}</p>
             </div>
