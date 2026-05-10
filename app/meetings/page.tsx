@@ -22,12 +22,12 @@ export default function MeetingsPage() {
   return (
     <PageWrapper>
       <div className="max-w-[1200px] mx-auto pt-[48px] pb-[72px]">
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-h2 text-[#17253D]">All Meetings</h1>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 mb-8">
+          <div className="w-full">
+            <h1 className="text-h2 text-[#17253D] leading-tight">All Meetings</h1>
             <p className="text-body text-[#262626] mt-1">View and manage all your recorded meetings</p>
           </div>
-          <Link href="/meeting/new" className="mm-btn mm-btn-primary">
+          <Link href="/meeting/new" className="mm-btn mm-btn-primary shrink-0 w-full md:w-auto justify-center">
             <Plus size={16} />
             New Meeting
           </Link>

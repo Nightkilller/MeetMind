@@ -84,16 +84,16 @@ export default function DashboardPage() {
     <PageWrapper>
       <div className="max-w-[1200px] mx-auto pt-[48px] pb-[72px]">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div>
-            <h1 className="text-h2 text-[#17253D]">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 mb-8">
+          <div className="w-full">
+            <h1 className="text-h2 text-[#17253D] leading-tight">
               Welcome back, {firstName}
             </h1>
             <p className="text-body text-[#262626] mt-1">Here&apos;s your meeting intelligence overview</p>
           </div>
           <Link
             href="/meeting/new"
-            className="mm-btn mm-btn-primary"
+            className="mm-btn mm-btn-primary shrink-0 w-full md:w-auto justify-center"
           >
             <Plus size={16} />
             New Meeting

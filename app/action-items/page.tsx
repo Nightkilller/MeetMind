@@ -14,9 +14,11 @@ export default function ActionItemsPage() {
   return (
     <PageWrapper>
       <div className="max-w-[1200px] mx-auto pt-[48px] pb-[72px]">
-        <div className="mb-8">
-          <h1 className="text-h2 text-[#17253D]">All Action Items</h1>
-          <p className="text-body text-[#262626] mt-1">Track and manage tasks across all your meetings</p>
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 mb-8">
+          <div className="w-full">
+            <h1 className="text-h2 text-[#17253D] leading-tight">All Action Items</h1>
+            <p className="text-body text-[#262626] mt-1">Track and manage tasks across all your meetings</p>
+          </div>
         </div>
 
         {isLoading ? (
