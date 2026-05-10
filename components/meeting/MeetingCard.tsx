@@ -24,7 +24,7 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
         {meeting.summary || 'No summary available yet. Click to view transcript.'}
       </p>
 
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#F2F2F2]">
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#F2F2F2] pr-8">
         <div className="flex items-center gap-4 text-small text-[#262626]">
           <span className="flex items-center gap-1.5">
             <Calendar size={14} color="#0078D4" />

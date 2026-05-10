@@ -48,7 +48,7 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
     // Basic mailto generation
     const subject = encodeURIComponent('Meeting Follow-up');
     const body = encodeURIComponent(draft);
-    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
   };
 
   return (

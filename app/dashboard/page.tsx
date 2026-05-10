@@ -16,7 +16,14 @@ import { Plus, Video, Brain } from 'lucide-react';
 export default function DashboardPage() {
   const { user, isLoaded, isSignedIn } = useUser();
   const [search, setSearch] = useState('');
-  const { meetings, isLoading } = useMeetings(search);
+  const [dateFilter, setDateFilter] = useState('');
+  const { meetings: allMeetings, isLoading } = useMeetings(search);
+
+  const meetings = allMeetings.filter((m) => {
+    if (!dateFilter) return true;
+    const meetingDate = new Date(m.date || m.createdAt).toISOString().split('T')[0];
+    return meetingDate === dateFilter;
+  });
 
   if (!isLoaded) {
     return (
@@ -85,9 +92,19 @@ export default function DashboardPage() {
         {/* Stats */}
         <StatsBar stats={stats} />
 
-        {/* Search */}
-        <div className="mb-8">
-          <SearchBar value={search} onChange={setSearch} placeholder="Search meetings, summaries…" />
+        {/* Search & Filter */}
+        <div className="mb-8 flex flex-col md:flex-row gap-4">
+          <div className="flex-1">
+            <SearchBar value={search} onChange={setSearch} placeholder="Search meetings, summaries…" />
+          </div>
+          <div className="w-full md:w-[200px]">
+            <input
+              type="date"
+              value={dateFilter}
+              onChange={(e) => setDateFilter(e.target.value)}
+              className="mm-input w-full h-[48px] bg-white text-[#262626]"
+            />
+          </div>
         </div>
 
         {/* Meeting grid */}
