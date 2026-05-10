@@ -213,11 +213,11 @@ export default function MeetingRecorder() {
                 <span className="w-2 h-2 rounded-full bg-[#0078D4] recording-pulse" />
                 Live Transcript Stream
               </p>
-              <p className="text-body text-[#262626] h-[100px] overflow-hidden relative">
+              <div className="text-body text-[#262626] h-[100px] overflow-hidden relative">
                 {liveTranscript}
                 <span className="animate-pulse">|</span>
                 <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F9F8FC] to-transparent pointer-events-none" />
-              </p>
+              </div>
             </div>
           )}
         </div>
