@@ -15,9 +15,9 @@ export default function PageWrapper({ children, showSidebar = true }: PageWrappe
       <Navbar />
       {showSidebar && <Sidebar />}
       <main
-        className={`pt-[54px] min-h-screen ${showSidebar ? 'pl-60' : ''}`}
+        className={`pt-[54px] min-h-screen pb-[64px] md:pb-0 ${showSidebar ? 'md:pl-60' : ''}`}
       >
-        <div className="p-6">{children}</div>
+        <div className="p-4 md:p-6">{children}</div>
       </main>
     </div>
   );

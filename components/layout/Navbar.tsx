@@ -31,7 +31,7 @@ export default function Navbar() {
               style={{ height: '40px', padding: '0 16px', fontSize: '14px' }}
             >
               <Plus size={16} />
-              New Meeting
+              <span className="hidden sm:inline">New Meeting</span>
             </Link>
 
             {/* Avatar */}
