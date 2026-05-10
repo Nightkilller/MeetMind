@@ -1,13 +1,22 @@
 import Link from 'next/link';
 import { Calendar, Clock, ArrowRight, CheckCircle2, Circle } from 'lucide-react';
 import Badge from '@/components/ui/Badge';
-import { formatDate, formatDuration } from '@/lib/utils';
+import { formatDate, formatDuration, calculateHealthScore } from '@/lib/utils';
 import type { Meeting } from '@/types';
 
 export default function MeetingCard({ meeting }: { meeting: Meeting }) {
   const pendingActions = meeting.actionItems?.filter((a) => !a.completed).length || 0;
   const completedActions = meeting.actionItems?.filter((a) => a.completed).length || 0;
   const totalActions = (meeting.actionItems?.length || 0);
+  const healthScore = calculateHealthScore(meeting);
+
+  const getHealthColor = (score: number) => {
+    if (score >= 75) return { bg: '#E6F3F1', text: '#008272', border: '#008272' };
+    if (score >= 50) return { bg: '#FFF4CE', text: '#795C00', border: '#F2C811' };
+    return { bg: '#FDF3F4', text: '#D13438', border: '#D13438' };
+  };
+
+  const hColor = getHealthColor(healthScore);
 
   return (
     <Link
@@ -17,7 +26,18 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
     >
       <div className="flex justify-between items-start mb-4">
         <h3 className="text-h6 text-[#17253D] line-clamp-1 pr-4">{meeting.title}</h3>
-        <Badge variant={meeting.status} dot>{meeting.status}</Badge>
+        <div className="flex items-center gap-2 shrink-0">
+          {meeting.status === 'completed' && (
+            <span 
+              className="text-[11px] font-semibold px-2 py-0.5 rounded-full flex items-center gap-1"
+              style={{ backgroundColor: hColor.bg, color: hColor.text, border: `1px solid ${hColor.border}` }}
+              title="Meeting Health Score (based on sentiment, decisions, actions, and duration)"
+            >
+              Health: {healthScore}
+            </span>
+          )}
+          <Badge variant={meeting.status} dot>{meeting.status}</Badge>
+        </div>
       </div>
 
       <p className="text-body text-[#262626] line-clamp-2 mb-6 flex-1">

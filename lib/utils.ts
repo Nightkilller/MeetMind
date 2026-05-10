@@ -69,5 +69,15 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     return true;
   } catch {
     return false;
-  }
+}
+
+/** Calculate Meeting Health Score */
+export function calculateHealthScore(meeting: any): number {
+  let score = 50;
+  if (meeting.sentiment === 'positive') score += 20;
+  if (meeting.sentiment === 'negative') score -= 15;
+  if (meeting.actionItems?.length > 0) score += 15;
+  if (meeting.keyDecisions?.length > 0) score += 10;
+  if (meeting.duration < 1800) score += 5; // under 30 min
+  return Math.min(100, Math.max(0, score));
 }

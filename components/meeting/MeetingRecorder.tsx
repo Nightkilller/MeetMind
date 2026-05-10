@@ -11,7 +11,10 @@ export default function MeetingRecorder() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [processingStep, setProcessingStep] = useState('');
   const [meetingTitle, setMeetingTitle] = useState('');
+  const [meetingType, setMeetingType] = useState('other');
   const [duration, setDuration] = useState(0);
+  const [liveTranscript, setLiveTranscript] = useState('');
+  const [showLiveTranscript, setShowLiveTranscript] = useState(false);
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -57,16 +60,17 @@ export default function MeetingRecorder() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          title: meetingTitle || 'Untitled Meeting',
+          title: meetingTitle || 'Processing...',
           status: 'processing',
           duration,
+          meetingType,
         }),
       });
       const { meeting, error: createErr } = await createRes.json();
       if (createErr) throw new Error(createErr);
 
       // Step 2: Transcribe
-      setProcessingStep('Transcribing audio with Azure Speech…');
+      setProcessingStep('Transcribing audio with Groq Whisper Large V3…');
       const audioBlob = new Blob(chunksRef.current, { type: 'audio/webm' });
       const formData = new FormData();
       formData.append('audio', audioBlob, 'meeting.webm');
@@ -75,21 +79,56 @@ export default function MeetingRecorder() {
       const { transcript, error: transcribeErr } = await transcribeRes.json();
       if (transcribeErr) throw new Error(transcribeErr);
 
-      // Step 3: Analyze with GPT-4o
-      setProcessingStep('Analyzing with Azure OpenAI GPT-4o…');
+      // WOW Feature: Simulate Live Transcription
+      setShowLiveTranscript(true);
+      const words = transcript.split(' ');
+      let currentText = '';
+      words.forEach((word: string, i: number) => {
+        setTimeout(() => {
+          currentText += (i === 0 ? '' : ' ') + word;
+          setLiveTranscript(currentText);
+        }, i * 120); // typing effect
+      });
+
+      // Priority 1: AI Title Generator
+      let finalTitle = meetingTitle;
+      if (!finalTitle) {
+        setProcessingStep('Generating AI Title…');
+        try {
+          const titleRes = await fetch('/api/generate-title', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ transcript }),
+          });
+          const { title } = await titleRes.json();
+          if (title) {
+            finalTitle = title;
+            setMeetingTitle(title);
+          }
+        } catch {
+          finalTitle = 'Untitled Meeting';
+        }
+      }
+
+      // Step 3: Analyze with Llama 3
+      setProcessingStep('Analyzing with Groq Llama 3.3 70B…');
       const analyzeRes = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript, meetingTitle: meeting.title }),
+        body: JSON.stringify({ transcript, meetingTitle: finalTitle, meetingType }),
       });
       const analysis = await analyzeRes.json();
+
+      // Wait for the simulated transcription to finish before redirecting
+      const typingDuration = words.length * 120;
+      await new Promise(r => setTimeout(r, Math.max(0, typingDuration - 3000)));
 
       // Step 4: Save results
       setProcessingStep('Saving results…');
       await fetch(`/api/meetings/${meeting._id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ transcript, ...analysis, status: 'completed' }),
+        body: JSON.stringify({ transcript, ...analysis, status: 'completed', title: finalTitle }),
       });
 
       toast.success('Meeting analyzed successfully!');
@@ -104,16 +143,29 @@ export default function MeetingRecorder() {
 
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto">
-      {/* Title input */}
-      <input
-        id="meeting-title-input"
-        type="text"
-        placeholder="Meeting title (optional)"
-        value={meetingTitle}
-        onChange={(e) => setMeetingTitle(e.target.value)}
-        className="mm-input text-center text-lg"
-        disabled={isRecording || isProcessing}
-      />
+      <div className="flex flex-col md:flex-row gap-4 w-full">
+        <input
+          id="meeting-title-input"
+          type="text"
+          placeholder="Meeting title (optional)"
+          value={meetingTitle}
+          onChange={(e) => setMeetingTitle(e.target.value)}
+          className="mm-input text-lg flex-1"
+          disabled={isRecording || isProcessing}
+        />
+        <select
+          value={meetingType}
+          onChange={(e) => setMeetingType(e.target.value)}
+          className="mm-input text-lg bg-white min-w-[200px]"
+          disabled={isRecording || isProcessing}
+        >
+          <option value="other">General Meeting</option>
+          <option value="standup">Daily Standup</option>
+          <option value="planning">Planning Session</option>
+          <option value="client">Client Call</option>
+          <option value="brainstorm">Brainstorming</option>
+        </select>
+      </div>
 
       {/* Waveform / status */}
       {isRecording && (
@@ -154,6 +206,20 @@ export default function MeetingRecorder() {
           <div className="w-64 h-1.5 bg-[#F2F2F2] rounded-full overflow-hidden">
             <div className="h-full bg-[#0078D4] rounded-full shimmer" />
           </div>
+
+          {showLiveTranscript && (
+            <div className="mt-6 w-full max-w-lg bg-[#F9F8FC] border border-[#E6E6E6] rounded-xl p-4 text-left shadow-inner transition-all duration-500">
+              <p className="text-[11px] font-semibold text-[#0078D4] uppercase tracking-wider mb-2 flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#0078D4] recording-pulse" />
+                Live Transcript Stream
+              </p>
+              <p className="text-body text-[#262626] h-[100px] overflow-hidden relative">
+                {liveTranscript}
+                <span className="animate-pulse">|</span>
+                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F9F8FC] to-transparent pointer-events-none" />
+              </p>
+            </div>
+          )}
         </div>
       )}
 

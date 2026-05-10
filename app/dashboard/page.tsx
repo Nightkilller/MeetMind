@@ -11,7 +11,7 @@ import MeetingCard from '@/components/meeting/MeetingCard';
 import Spinner from '@/components/ui/Spinner';
 import { useMeetings } from '@/hooks/useMeetings';
 import { calcHoursSaved } from '@/lib/utils';
-import { Plus, Video, Brain } from 'lucide-react';
+import { Plus, Video, Brain, AlertCircle } from 'lucide-react';
 
 export default function DashboardPage() {
   const { user, isLoaded, isSignedIn } = useUser();
@@ -67,6 +67,17 @@ export default function DashboardPage() {
     meetingsThisWeek,
   };
 
+  const overdueActionItems = allMeetings.flatMap(m => m.actionItems || [])
+    .filter(a => {
+      if (a.completed || !a.dueDate || a.dueDate === 'Not specified') return false;
+      const dueDate = new Date(a.dueDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return dueDate <= today;
+    });
+
+  const overdueCount = overdueActionItems.length;
+
   const firstName = user?.firstName || user?.primaryEmailAddress?.emailAddress?.split('@')[0] || 'there';
 
   return (
@@ -88,6 +99,28 @@ export default function DashboardPage() {
             New Meeting
           </Link>
         </div>
+
+        {/* Action Items Alert Banner */}
+        {overdueCount > 0 && (
+          <div className="mb-8 p-4 rounded-xl bg-[#FDF3F4] border border-[#D13438] flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500 shadow-sm">
+            <div className="w-10 h-10 rounded-full bg-[#D13438]/10 flex items-center justify-center shrink-0">
+              <AlertCircle size={20} color="#D13438" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-small font-bold text-[#D13438]">Action Items Require Attention</h3>
+              <p className="text-[13px] text-[#A4262C] mt-0.5">
+                You have {overdueCount} pending action item{overdueCount !== 1 && 's'} that {overdueCount === 1 ? 'is' : 'are'} overdue or due today.
+              </p>
+            </div>
+            <Link 
+              href="/action-items" 
+              className="ml-auto mm-btn bg-white text-[#D13438] hover:bg-[#FDF3F4] border border-[#D13438]/30 transition-all shrink-0"
+              style={{ height: '36px', padding: '0 16px', fontSize: '13px' }}
+            >
+              View Actions
+            </Link>
+          </div>
+        )}
 
         {/* Stats */}
         <StatsBar stats={stats} />
