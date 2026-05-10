@@ -140,20 +140,20 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
           </div>
         </div>
         
-        <div className="p-6 border-t border-[#F2F2F2] bg-[#F9F8FC] flex items-center justify-between gap-4 rounded-b-[24px]">
+        <div className="p-4 sm:p-6 border-t border-[#F2F2F2] bg-[#F9F8FC] flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4 rounded-b-[24px]">
           <button
             onClick={handleSave}
             disabled={isSaving || draft === emailDraft}
-            className="mm-btn mm-btn-ghost"
+            className="mm-btn mm-btn-ghost w-full sm:w-auto justify-center"
             style={{ height: '44px' }}
           >
             {isSaving ? 'Saving...' : 'Save Draft'}
           </button>
           
-          <div className="flex items-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
             <button
               onClick={handleCopy}
-              className="flex items-center gap-2 mm-btn mm-btn-secondary"
+              className="flex items-center justify-center gap-2 mm-btn mm-btn-secondary w-full sm:w-auto"
               style={{ height: '44px' }}
             >
               <Copy size={16} /> Copy
@@ -161,7 +161,7 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
             <button
               onClick={handleSend}
               disabled={isSending || sent || !toEmail}
-              className="flex items-center gap-2 mm-btn mm-btn-primary"
+              className="flex items-center justify-center gap-2 mm-btn mm-btn-primary w-full sm:w-auto"
               style={{ height: '44px' }}
             >
               {isSending ? (

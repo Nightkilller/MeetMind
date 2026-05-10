@@ -31,8 +31,17 @@ export default function SettingsPage() {
           <p className="text-body text-[#262626] mt-1">Manage your account preferences</p>
         </div>
 
-        <div className="bg-white p-6 rounded-[16px] shadow-sm border border-[#E6E6E6]">
-          <UserProfile routing="hash" />
+        <div className="md:bg-white md:p-6 rounded-[16px] md:shadow-sm md:border border-[#E6E6E6] w-full overflow-hidden">
+          <UserProfile 
+            routing="hash" 
+            appearance={{
+              elements: {
+                rootBox: "w-full",
+                card: "w-full shadow-none md:shadow-sm border-0 md:border m-0",
+                navbar: "hidden md:block",
+              }
+            }} 
+          />
         </div>
       </div>
     </PageWrapper>

@@ -192,31 +192,31 @@ export default function MeetingRecorder() {
       )}
 
       {isProcessing && (
-        <div className="flex flex-col items-center gap-4 text-center">
-          <div className="w-16 h-16 rounded-[24px] bg-white border border-[#F2F2F2] flex items-center justify-center animate-pulse shadow-sm">
-            <Brain size={32} color="#0078D4" />
+        <div className="flex flex-col items-center gap-6 w-full text-center mt-4">
+          <div className="w-20 h-20 rounded-[32px] bg-white border border-[#F2F2F2] flex items-center justify-center animate-pulse shadow-md">
+            <Brain size={40} color="#0078D4" />
           </div>
           <div>
-            <p className="text-h6 text-[#17253D] mb-1">Processing your meeting</p>
-            <p className="text-small text-[#0078D4] flex items-center gap-2 justify-center">
-              <Loader2 size={14} className="animate-spin" />
+            <h3 className="text-h4 md:text-h3 text-[#17253D] mb-2">Processing your meeting</h3>
+            <p className="text-body md:text-lg text-[#0078D4] flex items-center gap-2 justify-center font-medium">
+              <Loader2 size={18} className="animate-spin" />
               {processingStep}
             </p>
           </div>
-          <div className="w-64 h-1.5 bg-[#F2F2F2] rounded-full overflow-hidden">
+          <div className="w-full max-w-xs h-2 bg-[#F2F2F2] rounded-full overflow-hidden">
             <div className="h-full bg-[#0078D4] rounded-full shimmer" />
           </div>
 
           {showLiveTranscript && (
-            <div className="mt-6 w-full max-w-lg bg-[#F9F8FC] border border-[#E6E6E6] rounded-xl p-4 text-left shadow-inner transition-all duration-500">
-              <p className="text-[11px] font-semibold text-[#0078D4] uppercase tracking-wider mb-2 flex items-center gap-2">
+            <div className="mt-6 w-full bg-[#F9F8FC] border border-[#E6E6E6] rounded-2xl p-5 md:p-6 text-left shadow-inner transition-all duration-500">
+              <p className="text-xs md:text-sm font-bold text-[#0078D4] uppercase tracking-wider mb-3 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-[#0078D4] recording-pulse" />
                 Live Transcript Stream
               </p>
-              <div className="text-body text-[#262626] h-[100px] overflow-hidden relative">
+              <div className="text-body md:text-lg text-[#262626] h-[140px] overflow-hidden relative leading-relaxed">
                 {liveTranscript}
                 <span className="animate-pulse">|</span>
-                <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-[#F9F8FC] to-transparent pointer-events-none" />
+                <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-[#F9F8FC] to-transparent pointer-events-none" />
               </div>
             </div>
           )}
