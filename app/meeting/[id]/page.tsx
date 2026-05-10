@@ -261,6 +261,7 @@ export default function MeetingDetailPage() {
         onClose={() => setEmailModalOpen(false)}
         emailDraft={emailDraft}
         meetingId={meeting._id}
+        meetingTitle={meeting.title}
         onSave={(draft) => mutate({ meeting: { ...meeting, emailDraft: draft } }, false)}
       />
     </PageWrapper>
