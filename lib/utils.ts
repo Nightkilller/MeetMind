@@ -69,6 +69,7 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     return true;
   } catch {
     return false;
+  }
 }
 
 /** Calculate Meeting Health Score */
