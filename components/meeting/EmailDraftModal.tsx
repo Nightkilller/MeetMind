@@ -115,14 +115,17 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
         
         <div className="p-6 flex-1 overflow-y-auto space-y-4">
           <div>
-            <label className="block text-small font-semibold text-[#17253D] mb-2">Recipient Email (To)</label>
+            <label className="block text-small font-semibold text-[#17253D] mb-2">Recipient Emails (comma separated)</label>
             <input
-              type="email"
+              type="text"
               value={toEmail}
               onChange={e => setToEmail(e.target.value)}
-              placeholder="participant@example.com"
+              placeholder="team@example.com, client@example.com"
               className="mm-input w-full bg-white border border-[#E6E6E6] text-[#262626]"
             />
+            <p className="text-[12px] text-[#262626] mt-1.5 opacity-70">
+              You can send to multiple people at once by separating emails with a comma.
+            </p>
           </div>
           
           <div className="h-full min-h-[300px]">
