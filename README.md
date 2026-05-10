@@ -92,17 +92,20 @@ See `.env.example` for required variables. You will need:
 
 ## Features
 
+- ✅ **Context-Aware AI Templates:** Select meeting type (Standup, Planning, Client Call) to dynamically bias Groq's analysis prompt.
+- ✅ **AI Meeting Title Generator:** Automatically generates a concise 8-word title from the transcript using Groq if left blank.
+- ✅ **Meeting Health Score:** A dynamic grading algorithm out of 100 based on positive/negative sentiment, action items, key decisions, and duration.
+- ✅ **Smart Action Item Reminders:** The dashboard proactively alerts you with a red banner when action items are due today or overdue.
+- ✅ **Live Transcript Animation:** A stunning "wow-factor" word-by-word simulated stream mimicking real-time typing.
+- ✅ **EmailJS Integration:** Send beautifully formatted follow-up emails directly to multiple comma-separated recipients without leaving the app.
 - ✅ Real-time audio recording in browser (MediaRecorder API)
 - ✅ Groq Whisper Large V3 transcription (fast, accurate)
 - ✅ Groq Llama 3.3 70B meeting analysis (summary, decisions, action items)
-- ✅ One-click follow-up email generation
 - ✅ Action items with owner, priority, and due date
 - ✅ Searchable meeting history dashboard
 - ✅ Secure authentication (Clerk)
 - ✅ Responsive design (mobile + desktop)
-- ✅ Export to PDF (window.print())
 - ✅ Microsoft Azure enterprise UI (Light Theme)
-- ✅ Framer Motion animations
 
 ## Project Structure
 
@@ -115,13 +118,10 @@ meetmind/
 │   ├── meeting/new/page.tsx          # New meeting recorder
 │   ├── meeting/[id]/page.tsx         # Meeting detail (3-panel)
 │   └── api/                          # API routes
-│       ├── auth/[...nextauth]/       # NextAuth
 │       ├── meetings/                 # CRUD
 │       ├── transcribe/               # Groq Whisper
 │       ├── analyze/                  # Groq Llama 3.3 70B
-│       ├── summarize/                # Groq summary
-│       ├── action-items/             # Groq action extraction
-│       └── email-draft/              # Groq email generation
+│       └── generate-title/           # AI Title Generation
 ├── components/
 │   ├── ui/                           # Button, Card, Badge, Modal, Spinner, Toast
 │   ├── layout/                       # Navbar, Sidebar, PageWrapper
