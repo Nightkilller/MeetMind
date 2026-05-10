@@ -44,12 +44,9 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
     }
   };
 
-  const handleMailTo = () => {
-    // Basic mailto generation
-    const subject = encodeURIComponent('Meeting Follow-up');
-    const body = encodeURIComponent(draft);
-    window.open(`mailto:?subject=${subject}&body=${body}`, '_blank');
-  };
+  const subject = encodeURIComponent('Meeting Follow-up');
+  const body = encodeURIComponent(draft);
+  const mailToLink = `mailto:?subject=${subject}&body=${body}`;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-[#17253D]/40 backdrop-blur-sm">
@@ -98,13 +95,13 @@ export default function EmailDraftModal({ isOpen, onClose, emailDraft, meetingId
             >
               <Copy size={16} /> Copy
             </button>
-            <button
-              onClick={handleMailTo}
+            <a
+              href={mailToLink}
               className="flex items-center gap-2 mm-btn mm-btn-primary"
-              style={{ height: '44px' }}
+              style={{ height: '44px', textDecoration: 'none' }}
             >
               <Send size={16} /> Open in Email
-            </button>
+            </a>
           </div>
         </div>
       </div>
