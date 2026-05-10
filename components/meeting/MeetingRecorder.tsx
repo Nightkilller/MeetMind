@@ -143,20 +143,20 @@ export default function MeetingRecorder() {
 
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-xl mx-auto">
-      <div className="flex flex-col md:flex-row gap-4 w-full">
+      <div className="flex flex-col gap-4 w-full px-4">
         <input
           id="meeting-title-input"
           type="text"
           placeholder="Meeting title (optional)"
           value={meetingTitle}
           onChange={(e) => setMeetingTitle(e.target.value)}
-          className="mm-input text-lg flex-1"
+          className="mm-input text-lg w-full text-center"
           disabled={isRecording || isProcessing}
         />
         <select
           value={meetingType}
           onChange={(e) => setMeetingType(e.target.value)}
-          className="mm-input text-lg bg-white min-w-[200px]"
+          className="mm-input text-lg bg-white w-full text-center"
           disabled={isRecording || isProcessing}
         >
           <option value="other">General Meeting</option>
