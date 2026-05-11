@@ -23,6 +23,7 @@ import {
   Users,
   Loader2,
   AlertCircle,
+  Trash2,
 } from 'lucide-react';
 import type { ActionItem } from '@/types';
 
@@ -37,6 +38,7 @@ export default function MeetingDetailPage() {
   const [generatingEmail, setGeneratingEmail] = useState(false);
   const [emailDraft, setEmailDraft] = useState('');
   const [activeTab, setActiveTab] = useState<'transcript' | 'summary' | 'actions'>('summary');
+  const [isDeleting, setIsDeleting] = useState(false);
 
   if (!isLoaded || isLoading) {
     return (
@@ -98,6 +100,28 @@ export default function MeetingDetailPage() {
 
   const handleExportPDF = () => window.print();
 
+  const handleDelete = async () => {
+    if (!window.confirm('Are you sure you want to delete this meeting? This action cannot be undone and will delete all associated action items.')) {
+      return;
+    }
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/meetings/${meeting._id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        toast.success('Meeting deleted successfully');
+        router.push('/dashboard');
+      } else {
+        toast.error('Failed to delete meeting');
+        setIsDeleting(false);
+      }
+    } catch (error) {
+      toast.error('Failed to delete meeting');
+      setIsDeleting(false);
+    }
+  };
+
   const handleActionUpdate = (updated: ActionItem[]) => {
     mutate({ meeting: { ...meeting, actionItems: updated } }, false);
   };
@@ -112,35 +136,37 @@ export default function MeetingDetailPage() {
     <PageWrapper>
       <div className="max-w-[1200px] mx-auto py-[32px] px-6">
         {/* Top bar */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-8">
-          <div className="flex items-start gap-4 flex-1 min-w-0">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
+          <div className="flex items-start gap-3 flex-1 min-w-0 w-full">
             <button
               onClick={() => router.back()}
-              className="p-2 rounded-lg text-[#262626] hover:bg-[#F2F2F2] transition-all shrink-0 mt-1"
+              className="p-2 -ml-2 rounded-lg text-[#262626] hover:bg-[#F2F2F2] transition-all shrink-0 mt-0.5"
             >
               <ArrowLeft size={20} />
             </button>
 
-            <div className="min-w-0">
-              <div className="flex items-center gap-3 flex-wrap mb-2">
-                <h1 className="text-h2 text-[#17253D] truncate leading-tight">{meeting.title}</h1>
-                <Badge variant={meeting.status} dot>{meeting.status}</Badge>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
+                <h1 className="text-h3 sm:text-h2 text-[#17253D] truncate leading-tight">{meeting.title}</h1>
+                <div className="flex items-center gap-2">
+                  <Badge variant={meeting.status} dot>{meeting.status}</Badge>
+                </div>
               </div>
-              <div className="flex flex-wrap items-center gap-4 text-small text-[#262626]">
-                <span className="flex items-center gap-1.5">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-small text-[#555]">
+                <span className="flex items-center gap-1.5 whitespace-nowrap">
                   <Calendar size={14} color="#0078D4" />
                   {formatDate(meeting.date || meeting.createdAt)}
                 </span>
                 {meeting.duration > 0 && (
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1.5 whitespace-nowrap">
                     <Clock size={14} color="#0078D4" />
                     {formatDurationLong(meeting.duration)}
                   </span>
                 )}
                 {meeting.participants?.length > 0 && (
-                  <span className="flex items-center gap-1.5">
-                    <Users size={14} color="#0078D4" />
-                    {meeting.participants.join(', ')}
+                  <span className="flex items-center gap-1.5 line-clamp-1">
+                    <Users size={14} color="#0078D4" className="shrink-0" />
+                    <span className="truncate">{meeting.participants.join(', ')}</span>
                   </span>
                 )}
               </div>
@@ -148,31 +174,40 @@ export default function MeetingDetailPage() {
           </div>
 
           {/* Actions */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto mt-2 lg:mt-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#F2F2F2]">
             <button
               onClick={handleCopySummary}
-              className="flex items-center gap-2 mm-btn mm-btn-ghost"
-              style={{ height: '40px', padding: '0 16px', fontSize: '14px' }}
+              className="flex-1 lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-ghost bg-[#F9F8FC] lg:bg-transparent"
+              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
             >
               <Copy size={16} />
-              Copy
+              <span className="hidden sm:inline">Copy</span>
             </button>
             <button
               onClick={handleExportPDF}
-              className="flex items-center gap-2 mm-btn mm-btn-secondary"
-              style={{ height: '40px', padding: '0 16px', fontSize: '14px' }}
+              className="flex-1 lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-secondary"
+              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
             >
               <Printer size={16} />
-              PDF
+              <span className="hidden sm:inline">PDF</span>
             </button>
             <button
               onClick={handleGenerateEmail}
               disabled={generatingEmail}
-              className="flex items-center gap-2 mm-btn mm-btn-primary"
-              style={{ height: '40px', padding: '0 16px', fontSize: '14px' }}
+              className="flex-[2] lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-primary"
+              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
             >
               {generatingEmail ? <Loader2 size={16} className="animate-spin" /> : <Mail size={16} />}
               Email Draft
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="flex-none justify-center flex items-center mm-btn mm-btn-ghost text-red-600 hover:bg-red-50 hover:text-red-700 bg-[#F9F8FC] lg:bg-transparent"
+              style={{ height: '36px', width: '36px', padding: '0' }}
+              title="Delete meeting"
+            >
+              {isDeleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
             </button>
           </div>
         </div>
