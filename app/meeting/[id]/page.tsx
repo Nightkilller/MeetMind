@@ -8,6 +8,7 @@ import TranscriptViewer from '@/components/meeting/TranscriptViewer';
 import SummaryPanel from '@/components/meeting/SummaryPanel';
 import ActionItemsList from '@/components/meeting/ActionItemsList';
 import EmailDraftModal from '@/components/meeting/EmailDraftModal';
+import DeleteConfirmModal from '@/components/meeting/DeleteConfirmModal';
 import Badge from '@/components/ui/Badge';
 import Spinner from '@/components/ui/Spinner';
 import { useMeeting } from '@/hooks/useMeetings';
@@ -35,6 +36,7 @@ export default function MeetingDetailPage() {
 
   const { meeting, isLoading, error, mutate } = useMeeting(id);
   const [emailModalOpen, setEmailModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const [generatingEmail, setGeneratingEmail] = useState(false);
   const [emailDraft, setEmailDraft] = useState('');
   const [activeTab, setActiveTab] = useState<'transcript' | 'summary' | 'actions'>('summary');
@@ -100,10 +102,11 @@ export default function MeetingDetailPage() {
 
   const handleExportPDF = () => window.print();
 
-  const handleDelete = async () => {
-    if (!window.confirm('Are you sure you want to delete this meeting? This action cannot be undone and will delete all associated action items.')) {
-      return;
-    }
+  const handleDeleteClick = () => {
+    setDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
       const res = await fetch(`/api/meetings/${meeting._id}`, {
@@ -119,6 +122,7 @@ export default function MeetingDetailPage() {
     } catch (error) {
       toast.error('Failed to delete meeting');
       setIsDeleting(false);
+      setDeleteModalOpen(false);
     }
   };
 
@@ -201,7 +205,7 @@ export default function MeetingDetailPage() {
               Email Draft
             </button>
             <button
-              onClick={handleDelete}
+              onClick={handleDeleteClick}
               disabled={isDeleting}
               className="flex-none justify-center flex items-center mm-btn mm-btn-ghost text-red-600 hover:bg-red-50 hover:text-red-700 bg-[#F9F8FC] lg:bg-transparent"
               style={{ height: '36px', width: '36px', padding: '0' }}
@@ -298,6 +302,14 @@ export default function MeetingDetailPage() {
         meetingId={meeting._id}
         meetingTitle={meeting.title}
         onSave={(draft) => mutate({ meeting: { ...meeting, emailDraft: draft } }, false)}
+      />
+
+      <DeleteConfirmModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title={meeting.title}
+        isDeleting={isDeleting}
       />
     </PageWrapper>
   );

@@ -6,11 +6,13 @@ import { Calendar, Clock, ArrowRight, CheckCircle2, Circle, Trash2, Loader2 } fr
 import { mutate } from 'swr';
 import { toast } from 'react-hot-toast';
 import Badge from '@/components/ui/Badge';
+import DeleteConfirmModal from '@/components/meeting/DeleteConfirmModal';
 import { formatDate, formatDuration, calculateHealthScore } from '@/lib/utils';
 import type { Meeting } from '@/types';
 
 export default function MeetingCard({ meeting }: { meeting: Meeting }) {
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const pendingActions = meeting.actionItems?.filter((a) => !a.completed).length || 0;
   const completedActions = meeting.actionItems?.filter((a) => a.completed).length || 0;
@@ -25,14 +27,13 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
 
   const hColor = getHealthColor(healthScore);
 
-  const handleDelete = async (e: React.MouseEvent) => {
+  const handleDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    setShowModal(true);
+  };
 
-    if (!window.confirm('Are you sure you want to delete this meeting? This will delete all associated action items.')) {
-      return;
-    }
-
+  const handleConfirmDelete = async () => {
     setIsDeleting(true);
     try {
       const res = await fetch(`/api/meetings/${meeting._id}`, {
@@ -49,11 +50,13 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
     } catch (error) {
       toast.error('Failed to delete meeting');
       setIsDeleting(false);
+      setShowModal(false);
     }
   };
 
   return (
-    <Link
+    <>
+      <Link
       href={`/meeting/${meeting._id}`}
       className="card-elevated p-6 flex flex-col group transition-all duration-300 hover:shadow-[0px_8px_16px_0px_rgba(0,0,0,0.1)] hover:-translate-y-1"
       style={{ textDecoration: 'none' }}
@@ -72,7 +75,7 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
           )}
           <Badge variant={meeting.status} dot>{meeting.status}</Badge>
           <button
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             disabled={isDeleting}
             className="p-1.5 rounded-md text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors bg-[#F9F8FC] border border-transparent hover:border-red-100"
             title="Delete meeting"
@@ -117,5 +120,13 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
         <ArrowRight size={18} color="#0078D4" />
       </div>
     </Link>
+    <DeleteConfirmModal
+      isOpen={showModal}
+      onClose={() => setShowModal(false)}
+      onConfirm={handleConfirmDelete}
+      title={meeting.title}
+      isDeleting={isDeleting}
+    />
+    </>
   );
 }
