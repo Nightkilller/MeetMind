@@ -36,15 +36,17 @@ Browser (Next.js 16 App Router)
 
 | Service | Usage |
 |---|---|
-| GitHub Copilot | AI-assisted development (satisfies Microsoft stack requirement) |
+| Azure AI Inference — GitHub Models (GPT-4o) | Sentiment analysis for Meeting Health Score via models.inference.ai.azure.com |
+| GitHub Copilot | AI-assisted development, component scaffolding, debugging |
 
 ## AI Tools Used in Development
 
 | Tool | Purpose |
 |---|---|
+| Azure AI Inference (GitHub Models) | GPT-4o sentiment analysis |
 | GitHub Copilot | Inline code suggestions and autocompletion |
 | Groq Whisper Large V3 | Real-time audio transcription |
-| Groq Llama 3.3 70B | Meeting analysis, action items, email generation |
+| Groq Llama 3.3 70B | Meeting analysis, action items, title generation, email draft |
 | Claude (Anthropic) | Architecture planning and prompt engineering |
 | Cursor | AI-assisted full-stack code generation |
 
@@ -89,6 +91,7 @@ See `.env.example` for required variables. You will need:
 - `GROQ_API_KEY` (Free from console.groq.com)
 - `MONGODB_URI` (Free Atlas cluster)
 - `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` & `CLERK_SECRET_KEY` (Free from clerk.com)
+- `GITHUB_AI_TOKEN` (Free from github.com/marketplace/models — no credit card needed)
 
 ## Features
 

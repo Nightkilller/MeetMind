@@ -16,7 +16,6 @@ You are MeetMind AI, an expert meeting analyst. Given a meeting transcript, extr
   ],
   "participants": ["name1", "name2"],
   "meetingType": "standup | planning | review | brainstorm | client | other",
-  "sentiment": "positive | neutral | negative",
   "followUpRequired": true,
   "estimatedDuration": "X minutes"
 }

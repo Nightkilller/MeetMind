@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import groq from '@/lib/groq';
 import { ANALYSIS_PROMPT } from '@/lib/prompts';
+import { analyzeSentiment } from "@/lib/github-ai";
 
 export async function POST(req: NextRequest) {
   try {
@@ -36,6 +37,11 @@ export async function POST(req: NextRequest) {
     });
 
     const result = JSON.parse(response.choices[0].message.content || '{}');
+
+    // After Groq analysis:
+    const azureSentiment = await analyzeSentiment(transcript);
+    result.sentiment = azureSentiment;
+
     return NextResponse.json(result);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Analysis failed';
