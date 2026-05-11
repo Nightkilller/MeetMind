@@ -150,9 +150,9 @@ export default function MeetingDetailPage() {
             </button>
 
             <div className="min-w-0 flex-1">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 mb-2">
-                <h1 className="text-h3 sm:text-h2 text-[#17253D] truncate leading-tight">{meeting.title}</h1>
-                <div className="flex items-center gap-2">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-3">
+                <h1 className="text-2xl sm:text-h2 font-bold text-[#17253D] break-words leading-tight">{meeting.title}</h1>
+                <div className="flex items-center gap-2 shrink-0">
                   <Badge variant={meeting.status} dot>{meeting.status}</Badge>
                 </div>
               </div>
@@ -178,40 +178,43 @@ export default function MeetingDetailPage() {
           </div>
 
           {/* Actions */}
-          <div className="flex flex-wrap items-center gap-2 w-full lg:w-auto mt-2 lg:mt-0 pt-4 lg:pt-0 border-t lg:border-t-0 border-[#F2F2F2]">
-            <button
-              onClick={handleCopySummary}
-              className="flex-1 lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-ghost bg-[#F9F8FC] lg:bg-transparent"
-              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
-            >
-              <Copy size={16} />
-              <span className="hidden sm:inline">Copy</span>
-            </button>
-            <button
-              onClick={handleExportPDF}
-              className="flex-1 lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-secondary"
-              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
-            >
-              <Printer size={16} />
-              <span className="hidden sm:inline">PDF</span>
-            </button>
+          <div className="flex flex-wrap sm:flex-nowrap items-center gap-3 w-full lg:w-auto mt-2 pt-4 lg:mt-0 lg:pt-0 border-t lg:border-t-0 border-[#F2F2F2]">
+            <div className="flex items-center gap-2 w-full sm:w-auto">
+              <button
+                onClick={handleCopySummary}
+                className="flex-1 sm:flex-none justify-center flex items-center mm-btn bg-white border border-[#E6E6E6] hover:bg-[#F9F8FC] text-[#262626] rounded-lg transition-colors"
+                style={{ height: '42px', minWidth: '48px' }}
+                title="Copy Summary"
+              >
+                <Copy size={18} />
+              </button>
+              <button
+                onClick={handleExportPDF}
+                className="flex-1 sm:flex-none justify-center flex items-center mm-btn bg-white border border-[#E6E6E6] hover:bg-[#F9F8FC] text-[#262626] rounded-lg transition-colors"
+                style={{ height: '42px', minWidth: '48px' }}
+                title="Export PDF"
+              >
+                <Printer size={18} />
+              </button>
+              <button
+                onClick={handleDeleteClick}
+                disabled={isDeleting}
+                className="flex-1 sm:flex-none justify-center flex items-center mm-btn bg-white border border-[#E6E6E6] hover:bg-red-50 hover:border-red-200 text-red-500 rounded-lg transition-colors"
+                style={{ height: '42px', minWidth: '48px' }}
+                title="Delete meeting"
+              >
+                {isDeleting ? <Loader2 size={18} className="animate-spin" /> : <Trash2 size={18} />}
+              </button>
+            </div>
+            
             <button
               onClick={handleGenerateEmail}
               disabled={generatingEmail}
-              className="flex-[2] lg:flex-none justify-center flex items-center gap-2 mm-btn mm-btn-primary"
-              style={{ height: '36px', padding: '0 12px', fontSize: '14px' }}
+              className="w-full sm:w-auto justify-center flex items-center gap-2 mm-btn mm-btn-primary rounded-lg font-medium"
+              style={{ height: '42px', padding: '0 20px' }}
             >
-              {generatingEmail ? <Loader2 size={16} className="animate-spin" /> : <Mail size={16} />}
-              Email Draft
-            </button>
-            <button
-              onClick={handleDeleteClick}
-              disabled={isDeleting}
-              className="flex-none justify-center flex items-center mm-btn mm-btn-ghost text-red-600 hover:bg-red-50 hover:text-red-700 bg-[#F9F8FC] lg:bg-transparent"
-              style={{ height: '36px', width: '36px', padding: '0' }}
-              title="Delete meeting"
-            >
-              {isDeleting ? <Loader2 size={16} className="animate-spin" /> : <Trash2 size={16} />}
+              {generatingEmail ? <Loader2 size={18} className="animate-spin" /> : <Mail size={18} />}
+              <span className="whitespace-nowrap">Email Draft</span>
             </button>
           </div>
         </div>
