@@ -1,10 +1,17 @@
+'use client';
+
+import { useState } from 'react';
 import Link from 'next/link';
-import { Calendar, Clock, ArrowRight, CheckCircle2, Circle } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, CheckCircle2, Circle, Trash2, Loader2 } from 'lucide-react';
+import { mutate } from 'swr';
+import { toast } from 'react-hot-toast';
 import Badge from '@/components/ui/Badge';
 import { formatDate, formatDuration, calculateHealthScore } from '@/lib/utils';
 import type { Meeting } from '@/types';
 
 export default function MeetingCard({ meeting }: { meeting: Meeting }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const pendingActions = meeting.actionItems?.filter((a) => !a.completed).length || 0;
   const completedActions = meeting.actionItems?.filter((a) => a.completed).length || 0;
   const totalActions = (meeting.actionItems?.length || 0);
@@ -17,6 +24,33 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
   };
 
   const hColor = getHealthColor(healthScore);
+
+  const handleDelete = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!window.confirm('Are you sure you want to delete this meeting? This will delete all associated action items.')) {
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const res = await fetch(`/api/meetings/${meeting._id}`, {
+        method: 'DELETE',
+      });
+      if (res.ok) {
+        toast.success('Meeting deleted successfully');
+        // Refresh any SWR queries that fetch meetings
+        mutate((key) => typeof key === 'string' && key.startsWith('/api/meetings'));
+      } else {
+        toast.error('Failed to delete meeting');
+        setIsDeleting(false);
+      }
+    } catch (error) {
+      toast.error('Failed to delete meeting');
+      setIsDeleting(false);
+    }
+  };
 
   return (
     <Link
@@ -37,6 +71,14 @@ export default function MeetingCard({ meeting }: { meeting: Meeting }) {
             </span>
           )}
           <Badge variant={meeting.status} dot>{meeting.status}</Badge>
+          <button
+            onClick={handleDelete}
+            disabled={isDeleting}
+            className="p-1.5 rounded-md text-red-500 hover:bg-red-50 hover:text-red-700 transition-colors bg-[#F9F8FC] border border-transparent hover:border-red-100"
+            title="Delete meeting"
+          >
+            {isDeleting ? <Loader2 size={14} className="animate-spin" /> : <Trash2 size={14} />}
+          </button>
         </div>
       </div>
 
